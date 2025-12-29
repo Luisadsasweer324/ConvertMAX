@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ConvertMax - Convertidor Universal de Archivos Online Gratis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            animation: float linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            padding: 1.2rem 0;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            font-size: 2.5rem;
+            filter: drop-shadow(0 2px 4px rgba(102, 126, 234, 0.3));
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #555;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: #667eea;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 20px 3rem;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 900;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 2rem;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 30px 30px 0 0;
+            padding: 3rem 0;
+            margin-top: 2rem;
+            box-shadow: 0 -10px 50px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-bar {
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1.2rem 3rem 1.2rem 1.5rem;
+            border: 3px solid #e0e0e0;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            color: #999;
+        }
+
+        .categories {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            overflow-x: auto;
+            padding-bottom: 1rem;
+        }
+
+        .category-btn {
+            padding: 0.8rem 1.8rem;
+            border: none;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            white-space: nowrap;
+            color: #555;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .category-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .converters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .converter-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .converter-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .converter-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.3);
+            border-color: #667eea;
+        }
+
+        .converter-card:hover::before {
+            opacity: 0.03;
+        }
+
+        .converter-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+            position: relative;
+            z-index: 1;
+        }
+
+        .converter-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #333;
+            position: relative;
+            z-index: 1;
+        }
+
+        .converter-desc {
+            font-size: 0.9rem;
+            color: #777;
+            position: relative;
+            z-index: 1;
+        }
+
+        .converter-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            z-index: 1;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 25px;
+            padding: 3rem;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.4s ease-out;
+            position: relative;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: #f5f5f5;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover {
+            background: #e0e0e0;
+            transform: rotate(90deg);
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .modal-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-subtitle {
+            color: #777;
+        }
+
+        .upload-area {
+            border: 3px dashed #d0d0d0;
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #fafafa;
+            margin-bottom: 2rem;
+        }
+
+        .upload-area:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .upload-area.dragover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+            transform: scale(1.02);
+        }
+
+        .upload-icon {
+            font-size: 4rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .upload-text {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-hint {
+            font-size: 0.9rem;
+            color: #999;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .options-group {
+            margin-bottom: 2rem;
+        }
+
+        .options-label {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: 700;
+            color: #555;
+        }
+
+        .format-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .format-btn {
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .format-btn:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .format-btn.selected {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+
+        .quality-slider {
+            width: 100%;
+            margin: 1rem 0;
+        }
+
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #e0e0e0;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(102, 126, 234, 0.4);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+            border: none;
+        }
+
+        .convert-btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .convert-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(102, 126, 234, 0.5);
+        }
+
+        .convert-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .progress-container {
+            display: none;
+            margin-top: 2rem;
+        }
+
+        .progress-container.active {
+            display: block;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            transition: width 0.3s;
+            width: 0%;
+        }
+
+        .progress-text {
+            text-align: center;
+            color: #555;
+            font-weight: 600;
+        }
+
+        .result-container {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 15px;
+            margin-top: 2rem;
+        }
+
+        .result-container.active {
+            display: block;
+        }
+
+        .result-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .result-text {
+            font-size: 1.2rem;
+            color: #555;
+            margin-bottom: 1.5rem;
+        }
+
+        .download-btn {
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(16, 185, 129, 0.4);
+        }
+
+        .features-section {
+            padding: 4rem 0;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon-box {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .feature-desc {
+            color: #777;
+            line-height: 1.6;
+        }
+
+        .footer {
+            background: #2d3748;
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-link:hover {
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .stats {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .converters-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                padding: 2rem 1.5rem;
+            }
+
+            .categories {
+                justify-content: flex-start;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+
+        .file-preview {
+            display: none;
+            background: rgba(102, 126, 234, 0.05);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .file-preview.active {
+            display: block;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .file-info-icon {
+            font-size: 2.5rem;
+        }
+
+        .file-details {
+            flex: 1;
+        }
+
+        .file-name {
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 0.3rem;
+        }
+
+        .file-size {
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        .remove-file {
+            background: #ff4444;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .remove-file:hover {
+            background: #cc0000;
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <div class="logo">
+                    <span class="logo-icon">🔄</span>
+                    ConvertMax
+                </div>
+                <div class="nav-links">
+                    <a href="#" class="nav-link">Inicio</a>
+                    <a href="#" class="nav-link">Herramientas</a>
+                    <a href="#" class="nav-link">Blog</a>
+                    <a href="#" class="nav-link">Premium</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Convierte Cualquier Archivo en Segundos</h1>
+            <p>La herramienta más completa y fácil de usar. 100% gratis, rápida y segura</p>
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-number">50+</span>
+                    <span class="stat-label">Formatos</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">1M+</span>
+                    <span class="stat-label">Conversiones</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">100%</span>
+                    <span class="stat-label">Seguro</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="search-bar">
+                <input type="text" id="searchInput" class="search-input" placeholder="Buscar convertidor... (ej: PDF a Word)">
+                <span class="search-icon">🔍</span>
+            </div>
+
+            <div class="categories">
+                <button class="category-btn active" data-category="all">Todos</button>
+                <button class="category-btn" data-category="document">📄 Documentos</button>
+                <button class="category-btn" data-category="image">🖼️ Imágenes</button>
+                <button class="category-btn" data-category="video">🎬 Videos</button>
+                <button class="category-btn" data-category="audio">🎵 Audio</button>
+                <button class="category-btn" data-category="compress">📦 Comprimir</button>
+                <button class="category-btn" data-category="ebook">📚 eBooks</button>
+            </div>
+
+            <div class="converters-grid" id="convertersGrid"></div>
+        </div>
+
+        <section class="features-section">
+            <div class="container">
+                <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 1rem; color: #333;">¿Por qué ConvertMax?</h2>
+                <p style="text-align: center; color: #777; margin-bottom: 2rem;">La mejor herramienta de conversión online</p>
+                
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon-box">⚡</div>
+                        <h3 class="feature-title">Super Rápido</h3>
+                        <p class="feature-desc">Conversiones en segundos gracias a nuestra tecnología optimizada</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon-box">🔒</div>
+                        <h3 class="feature-title">100% Seguro</h3>
+                        <p class="feature-desc">Tus archivos se procesan localmente y se eliminan automáticamente</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon-box">💎</div>
+                        <h3 class="feature-title">Alta Calidad</h3>
+                        <p class="feature-desc">Mantén la mejor calidad posible en todas tus conversiones</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon-box">🆓</div>
+                        <h3 class="feature-title">Totalmente Gratis</h3>
+                        <p class="feature-desc">Sin límites, sin registro, sin costos ocultos</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#" class="footer-link">Términos de Uso</a>
+                <a href="#" class="footer-link">Política de Privacidad</a>
+                <a href="#" class="footer-link">Contacto</a>
+                <a href="#" class="footer-link">API</a>
+                <a href="#" class="footer-link">Blog</a>
+            </div>
+            <p>&copy; 2025 ConvertMax. Todos los derechos reservados.</p>
+            <p style="margin-top: 0.5rem; opacity: 0.7; font-size: 0.9rem;">Convierte archivos de forma rápida, segura y gratuita</p>
+        </div>
+    </footer>
+
+    <div class="modal" id="converterModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <div class="modal-header">
+                <div class="modal-icon" id="modalIcon">📄</div>
+                <h2 class="modal-title" id="modalTitle">PDF a Word</h2>
+                <p class="modal-subtitle" id="modalSubtitle">Convierte tus archivos PDF a formato Word editable</p>
+            </div>
+
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">☁️</div>
+                <p class="upload-text">Arrastra y suelta tu archivo aquí</p>
+                <p class="upload-hint">o haz clic para seleccionar</p>
+                <input type="file" id="fileInput" class="file-input">
+            </div>
+
+            <div class="file-preview" id="filePreview">
+                <div class="file-info">
+                    <div class="file-info-icon">📄</div>
+                    <div class="file-details">
+                        <div class="file-name" id="fileName">documento.pdf</div>
+                        <div class="file-size" id="fileSize">2.5 MB</div>
+                    </div>
+                    <button class="remove-file" onclick="removeFile()">Eliminar</button>
+                </div>
+            </div>
+
+            <div class="options-group" id="formatOptions">
+                <label class="options-label">Formato de salida</label>
+                <div class="format-selector" id="formatSelector"></div>
+            </div>
+
+            <div class="options-group" id="qualityOptions" style="display: none;">
+                <label class="options-label">Calidad: <span id="qualityValue">90</span>%</label>
+                <input type="range" min="1" max="100" value="90" class="slider" id="qualitySlider">
+            </div>
+
+            <button class="convert-btn" id="convertBtn" onclick="startConversion()" disabled>Selecciona un archivo</button>
+
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <p class="progress-text" id="progressText">Convirtiendo archivo...</p>
+            </div>
+
+            <div class="result-container" id="resultContainer">
+                <div class="result-icon">✅</div>
+                <p class="result-text">¡Conversión completada con éxito!</p>
+                <button class="download-btn" onclick="downloadFile()">⬇️ Descargar Archivo</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const converters = [
+            { id: 1, icon: '📄', title: 'PDF a Word', desc: 'Convierte PDF a DOCX editable', category: 'document', badge: 'Popular', formats: ['DOCX', 'DOC', 'RTF', 'TXT'] },
+            { id: 2, icon: '📝', title: 'Word a PDF', desc: 'Convierte DOCX/DOC a PDF', category: 'document', badge: 'Popular', formats: ['PDF'] },
+            { id: 3, icon: '📊', title: 'Excel a PDF', desc: 'Convierte hojas de cálculo a PDF', category: 'document', formats: ['PDF'] },
+            { id: 4, icon: '📈', title: 'PDF a Excel', desc: 'Extrae tablas de PDF a Excel', category: 'document', formats: ['XLSX', 'XLS', 'CSV'] },
+            { id: 5, icon: '🖼️', title: 'JPG a PNG', desc: 'Convierte imágenes JPG a PNG', category: 'image', badge: 'Popular', formats: ['PNG', 'WEBP', 'GIF', 'BMP'] },
+            { id: 6, icon: '🎨', title: 'PNG a JPG', desc: 'Convierte PNG a formato JPG', category: 'image', formats: ['JPG', 'JPEG', 'WEBP', 'BMP'] },
+            { id: 7, icon: '🖼️', title: 'HEIC a JPG', desc: 'Convierte fotos iPhone a JPG', category: 'image', badge: 'iOS', formats: ['JPG', 'PNG', 'WEBP'] },
+            { id: 8, icon: '🎬', title: 'MP4 a AVI', desc: 'Convierte videos MP4 a AVI', category: 'video', formats: ['AVI', 'MOV', 'WMV', 'MKV'] },
+            { id: 9, icon: '📹', title: 'MOV a MP4', desc: 'Convierte videos MOV a MP4', category: 'video', formats: ['MP4', 'AVI', 'WMV', 'WEBM'] },
+            { id: 10, icon: '🎵', title: 'MP3 a WAV', desc: 'Convierte audio MP3 a WAV', category: 'audio', formats: ['WAV', 'FLAC', 'OGG', 'AAC'] },
+            { id: 11, icon: '🎶', title: 'WAV a MP3', desc: 'Comprime audio WAV a MP3', category: 'audio', badge: 'Popular', formats: ['MP3', 'AAC', 'OGG', 'M4A'] },
+            { id: 12, icon: '📦', title: 'Comprimir PDF', desc: 'Reduce el tamaño de PDFs', category: 'compress', badge: 'Útil', formats: ['PDF'] },
+            { id: 13, icon: '🗜️', title: 'Comprimir JPG', desc: 'Optimiza imágenes JPG', category: 'compress', formats: ['JPG'] },
+            { id: 14, icon: '📦', title: 'Comprimir PNG', desc: 'Reduce tamaño de PNG', category: 'compress', formats: ['PNG'] },
+            { id: 15, icon: '📚', title: 'EPUB a PDF', desc: 'Convierte eBooks a PDF', category: 'ebook', formats: ['PDF', 'MOBI', 'AZW3'] },
+            { id: 16, icon: '📖', title: 'PDF a EPUB', desc: 'Crea eBooks desde PDF', category: 'ebook', formats: ['EPUB', 'MOBI', 'AZW3'] },
+            { id: 17, icon: '🎞️', title: 'GIF a MP4', desc: 'Convierte animaciones a video', category: 'video', formats: ['MP4', 'WEBM', 'AVI'] },
+            { id: 18, icon: '🎬', title: 'Video a GIF', desc: 'Crea GIFs desde videos', category: 'video', badge: 'Nuevo', formats: ['GIF'] },
+            { id: 19, icon: '📄', title: 'TXT a PDF', desc: 'Convierte texto plano a PDF', category: 'document', formats: ['PDF'] },
+            { id: 20, icon: '📝', title: 'PDF a TXT', desc: 'Extrae texto de PDF', category: 'document', formats: ['TXT'] },
+            { id: 21, icon: '🖼️', title: 'SVG a PNG', desc: 'Convierte vectores a imágenes', category: 'image', formats: ['PNG', 'JPG', 'WEBP'] },
+            { id: 22, icon: '🎨', title: 'PNG a SVG', desc: 'Vectoriza imágenes PNG', category: 'image', formats: ['SVG'] },
+            { id: 23, icon: '📊', title: 'CSV a Excel', desc: 'Convierte CSV a XLSX', category: 'document', formats: ['XLSX', 'XLS'] },
+            { id: 24, icon: '📈', title: 'Excel a CSV', desc: 'Exporta datos a CSV', category: 'document', formats: ['CSV', 'TXT'] },
+            { id: 25, icon: '🎵', title: 'M4A a MP3', desc: 'Convierte audio Apple a MP3', category: 'audio', formats: ['MP3', 'WAV', 'OGG'] },
+            { id: 26, icon: '🎶', title: 'FLAC a MP3', desc: 'Comprime audio sin pérdida', category: 'audio', formats: ['MP3', 'AAC', 'WAV'] },
+            { id: 27, icon: '📹', title: 'MKV a MP4', desc: 'Convierte videos MKV', category: 'video', badge: 'Popular', formats: ['MP4', 'AVI', 'MOV'] },
+            { id: 28, icon: '🎬', title: 'WEBM a MP4', desc: 'Convierte videos web', category: 'video', formats: ['MP4', 'AVI', 'MOV'] },
+            { id: 29, icon: '🖼️', title: 'WebP a JPG', desc: 'Convierte imágenes web', category: 'image', formats: ['JPG', 'PNG', 'GIF'] },
+            { id: 30, icon: '🎨', title: 'BMP a PNG', desc: 'Convierte bitmaps', category: 'image', formats: ['PNG', 'JPG', 'WEBP'] },
+            { id: 31, icon: '📄', title: 'HTML a PDF', desc: 'Convierte páginas web', category: 'document', formats: ['PDF'] },
+            { id: 32, icon: '📝', title: 'Markdown a HTML', desc: 'Renderiza Markdown', category: 'document', formats: ['HTML', 'PDF'] },
+            { id: 33, icon: '🎵', title: 'OGG a MP3', desc: 'Convierte audio OGG', category: 'audio', formats: ['MP3', 'WAV', 'AAC'] },
+            { id: 34, icon: '📹', title: 'FLV a MP4', desc: 'Convierte videos Flash', category: 'video', formats: ['MP4', 'AVI', 'MOV'] },
+            { id: 35, icon: '🖼️', title: 'TIFF a JPG', desc: 'Convierte imágenes TIFF', category: 'image', formats: ['JPG', 'PNG', 'WEBP'] },
+            { id: 36, icon: '📊', title: 'JSON a CSV', desc: 'Exporta datos JSON', category: 'document', formats: ['CSV', 'XLSX'] },
+            { id: 37, icon: '📄', title: 'PowerPoint a PDF', desc: 'Convierte presentaciones', category: 'document', formats: ['PDF'] },
+            { id: 38, icon: '🎨', title: 'PSD a PNG', desc: 'Exporta archivos Photoshop', category: 'image', formats: ['PNG', 'JPG', 'WEBP'] },
+            { id: 39, icon: '🎵', title: 'AAC a MP3', desc: 'Convierte audio AAC', category: 'audio', formats: ['MP3', 'WAV', 'OGG'] },
+            { id: 40, icon: '📹', title: 'AVI a MP4', desc: 'Moderniza videos AVI', category: 'video', formats: ['MP4', 'MOV', 'WEBM'] }
+        ];
+
+        let selectedFile = null;
+        let currentConverter = null;
+        let selectedFormat = null;
+
+        function initParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.width = Math.random() * 10 + 5 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDuration = Math.random() * 10 + 10 + 's';
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        function renderConverters(filter = 'all', search = '') {
+            const grid = document.getElementById('convertersGrid');
+            let filtered = converters;
+
+            if (filter !== 'all') {
+                filtered = converters.filter(c => c.category === filter);
+            }
+
+            if (search) {
+                filtered = filtered.filter(c => 
+                    c.title.toLowerCase().includes(search.toLowerCase()) ||
+                    c.desc.toLowerCase().includes(search.toLowerCase())
+                );
+            }
+
+            grid.innerHTML = filtered.map(converter => `
+                <div class="converter-card" onclick="openConverter(${converter.id})">
+                    ${converter.badge ? `<span class="converter-badge">${converter.badge}</span>` : ''}
+                    <div class="converter-icon">${converter.icon}</div>
+                    <h3 class="converter-title">${converter.title}</h3>
+                    <p class="converter-desc">${converter.desc}</p>
+                </div>
+            `).join('');
+        }
+
+        function openConverter(id) {
+            currentConverter = converters.find(c => c.id === id);
+            const modal = document.getElementById('converterModal');
+            
+            document.getElementById('modalIcon').textContent = currentConverter.icon;
+            document.getElementById('modalTitle').textContent = currentConverter.title;
+            document.getElementById('modalSubtitle').textContent = currentConverter.desc;
+            
+            const formatSelector = document.getElementById('formatSelector');
+            formatSelector.innerHTML = currentConverter.formats.map(format => `
+                <button class="format-btn" onclick="selectFormat('${format}')">${format}</button>
+            `).join('');
+
+            const qualityOptions = document.getElementById('qualityOptions');
+            qualityOptions.style.display = currentConverter.category === 'image' || currentConverter.category === 'compress' ? 'block' : 'none';
+
+            resetModal();
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('converterModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            resetModal();
+        }
+
+        function resetModal() {
+            selectedFile = null;
+            selectedFormat = null;
+            document.getElementById('filePreview').classList.remove('active');
+            document.getElementById('uploadArea').style.display = 'block';
+            document.getElementById('progressContainer').classList.remove('active');
+            document.getElementById('resultContainer').classList.remove('active');
+            document.getElementById('convertBtn').disabled = true;
+            document.getElementById('convertBtn').textContent = 'Selecciona un archivo';
+            document.querySelectorAll('.format-btn').forEach(btn => btn.classList.remove('selected'));
+        }
+
+        function selectFormat(format) {
+            selectedFormat = format;
+            document.querySelectorAll('.format-btn').forEach(btn => {
+                btn.classList.remove('selected');
+                if (btn.textContent === format) {
+                    btn.classList.add('selected');
+                }
+            });
+            updateConvertButton();
+        }
+
+        function updateConvertButton() {
+            const btn = document.getElementById('convertBtn');
+            if (selectedFile && selectedFormat) {
+                btn.disabled = false;
+                btn.textContent = `Convertir a ${selectedFormat}`;
+            } else if (selectedFile) {
+                btn.disabled = false;
+                btn.textContent = 'Selecciona formato de salida';
+            } else {
+                btn.disabled = true;
+                btn.textContent = 'Selecciona un archivo';
+            }
+        }
+
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+
+        uploadArea.addEventListener('click', () => fileInput.click());
+
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file) handleFile(file);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) handleFile(file);
+        });
+
+        function handleFile(file) {
+            selectedFile = file;
+            document.getElementById('fileName').textContent = file.name;
+            document.getElementById('fileSize').textContent = formatFileSize(file.size);
+            document.getElementById('filePreview').classList.add('active');
+            document.getElementById('uploadArea').style.display = 'none';
+            updateConvertButton();
+        }
+
+        function removeFile() {
+            selectedFile = null;
+            selectedFormat = null;
+            document.getElementById('filePreview').classList.remove('active');
+            document.getElementById('uploadArea').style.display = 'block';
+            fileInput.value = '';
+            updateConvertButton();
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+        }
+
+        function startConversion() {
+            if (!selectedFile || !selectedFormat) return;
+
+            document.getElementById('convertBtn').style.display = 'none';
+            document.getElementById('progressContainer').classList.add('active');
+
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    setTimeout(showResult, 500);
+                }
+                document.getElementById('progressFill').style.width = progress + '%';
+                document.getElementById('progressText').textContent = `Convirtiendo archivo... ${Math.round(progress)}%`;
+            }, 200);
+        }
+
+        function showResult() {
+            document.getElementById('progressContainer').classList.remove('active');
+            document.getElementById('resultContainer').classList.add('active');
+        }
+
+        function downloadFile() {
+            const blob = new Blob(['Archivo convertido simulado'], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `convertido.${selectedFormat.toLowerCase()}`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                renderConverters(this.dataset.category);
+            });
+        });
+
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const activeCategory = document.querySelector('.category-btn.active').dataset.category;
+            renderConverters(activeCategory, e.target.value);
+        });
+
+        document.getElementById('qualitySlider').addEventListener('input', function(e) {
+            document.getElementById('qualityValue').textContent = e.target.value;
+        });
+
+        document.getElementById('converterModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        initParticles();
+        renderConverters();
+    </script>
+</body>
+</html>
